@@ -1,6 +1,8 @@
 // app/routes.js
 module.exports = function(app, passport) {
 
+    app.use(require('./../controllers/'));
+
 	// =====================================
 	// HOME PAGE (with login links) ========
 	// =====================================
@@ -62,17 +64,6 @@ module.exports = function(app, passport) {
 		});
 	});
 
-	app.get('/post', isLoggedIn, function(req, res) {
-		res.render('post.ejs', {
-			user : req.user,
-			message : req.flash('postMessage')
-		});
-	});
-
-	app.post('/post', isLoggedIn, function(req, res) {
-
-	});
-
 	// =====================================
 	// LOGOUT ==============================
 	// =====================================
@@ -85,10 +76,11 @@ module.exports = function(app, passport) {
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
 
-	// if user is authenticated in the session, carry on
-	if (req.isAuthenticated())
-		return next();
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
 
-	// if they aren't redirect them to the home page
-	res.redirect('/');
+    // if they aren't redirect them to the home page
+    res.redirect('/');
 }
+
