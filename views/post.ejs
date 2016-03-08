@@ -1,0 +1,47 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body 		{ padding-top:80px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="col-sm-6 col-sm-offset-3">
+        <h1><i class="fa fa-commenting"></i>  Post a blog comment!</h1>
+
+        <!-- show any messages that come back with post errors -->
+        <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+        <% } %>
+
+        <div id="postInfo">
+            <h3>Posting as: <%= user.username %></h3>
+        </div>
+
+        <!-- POST FORM -->
+        <form action="/post" method="post">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" class="form-control" name="title">
+            </div>
+            <div class="form-group">
+                <label>Blog Entry Text</label>
+                <textarea class="form-control" rows="5" name="comment"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-warning btn-lg">Submit</button>
+        </form>
+
+        <hr>
+
+        <p>Wrong account? <a href="/logout">Logout</a></p>
+        <p>Or go <a href="/">home</a>.</p>
+    </div>
+</div>
+</body>
+</html>
