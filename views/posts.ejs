@@ -1,0 +1,44 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body 		{ padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1>Here are the posts!</h1>
+        <br>
+        <a href="/submit" class="btn btn-default btn-lg">Submit a post!</a>
+        <a href="/logout" class="btn btn-default btn-lg">Logout</a>
+    </div>
+
+    <% posts.forEach(function(post) { %>
+        <div class="row">
+
+            <!-- LOCAL INFORMATION -->
+            <div class="span9">
+                <div class="well well-lg">
+                    <strong>Posted by:</strong> <%= post.username %><br>
+                    <strong>on</strong> <%= post.date %><br>
+
+                    <p>
+                        <strong>Title:</strong> <%= post.title %><br>
+                        <strong>Comment:</strong> <%= post.comment %>
+                    </p>
+                </div>
+            </div>
+        </div>
+    <% }); %>
+
+
+
+</div>
+</body>
+</html>
