@@ -14,6 +14,13 @@
 <body>
 <div class="container">
 
+    <% if (flash.postSuccessful) { %>
+    <div class="alert alert-success">
+        <%= flash.postSuccessful %>
+        <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    </div>
+    <% } %>
+
     <div class="page-header text-center">
         <h1>Here are the posts!</h1>
         <br>

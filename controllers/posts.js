@@ -23,7 +23,8 @@ router.get('/posts', isLoggedIn, function (req, res) {
 
         res.render('posts.ejs', {
             user: req.user,
-            returningAfterSubmitting: req.postSuccessful,
+            flash: req.flash(),
+            postSuccessful: req.postSuccessful,
             posts: results
         });
     });
@@ -61,7 +62,8 @@ router.post('/submit', isLoggedIn, function (req, res) {
                 req.flash('errorMessage', err);
                 res.redirect('back');
             } else {
-                res.redirect('/posts?postSuccessful=true');
+                req.flash('postSuccessful', 'Your post has been successfully submitted!');
+                res.redirect('/posts');
             }
         });
     }
