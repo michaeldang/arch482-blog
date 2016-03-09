@@ -14,6 +14,11 @@
     <div class="col-sm-6 col-sm-offset-3">
         <h1><i class="fa fa-commenting"></i>  Post a blog comment!</h1>
 
+        <!-- show any messages that come back with authentication -->
+        <% if (flash.errorMessage) { %>
+        <div class="alert alert-danger"><%= flash.errorMessage %></div>
+        <% } %>
+
         <div id="postInfo">
             <h3>Posting as: <%= user.username %></h3>
         </div>
