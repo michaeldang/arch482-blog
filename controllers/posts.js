@@ -8,21 +8,37 @@ var express = require('express'),
     moment = require('moment'),
     dbconfig = require('./../config/database'),
     mysql = require('mysql'),
-    connection = mysql.createConnection(dbconfig.connection),
-    flash = require('connect-flash')
-
-connection.query('USE ' + dbconfig.database);
+    flash = require('connect-flash');
 
 router.use(flash());
 
-router.get('/post', isLoggedIn, function (req, res) {
-    res.render('post.ejs', {
+router.get('/posts', isLoggedIn, function (req, res) {
+    var query = "SELECT posts.*, users.username FROM posts, users WHERE posts.posterId = users.id ORDER BY date desc";
+
+    var connection = mysql.createConnection(dbconfig.connection);
+    connection.query('USE ' + dbconfig.database);
+    connection.query(query, function (err, rows) {
+        if (err) console.log(err);
+        var results = rows;
+
+        res.render('posts.ejs', {
+            user: req.user,
+            returningAfterSubmitting: req.postSuccessful,
+            posts: results
+        });
+    });
+
+
+});
+
+router.get('/submit', isLoggedIn, function (req, res) {
+    res.render('submit.ejs', {
         user: req.user,
         flash: req.flash()
     });
 });
 
-router.post('/post', isLoggedIn, function (req, res) {
+router.post('/submit', isLoggedIn, function (req, res) {
     var title = sanitizer.escape(req.body.postTitle);
     var comment = sanitizer.escape(req.body.postComment);
     if (!title || title === "" || !title.trim()) {
@@ -32,11 +48,21 @@ router.post('/post', isLoggedIn, function (req, res) {
         req.flash('errorMessage', 'Comment field cannot be blank');
         res.redirect('back');
     } else {
-        var date = moment().format('YYYY-MM-DD HH:MM:SS');
+        var date = moment().format('YYYY-MM-DD HH:mm:ss');
+        console.log(date);
         var posterId = req.user.id;
         var insertQuery = "INSERT INTO posts (posterId, title, comment, date) values (?,?,?,?)";
+
+        var connection = mysql.createConnection(dbconfig.connection);
+        connection.query('USE ' + dbconfig.database);
         connection.query(insertQuery, [posterId, title, comment, date], function (err, rows) {
-            res.redirect('/?postSuccessful=true');
+            if(err) {
+                console.log(err);
+                req.flash('errorMessage', err);
+                res.redirect('back');
+            } else {
+                res.redirect('/posts?postSuccessful=true');
+            }
         });
     }
 });
