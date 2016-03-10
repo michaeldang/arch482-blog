@@ -22,7 +22,7 @@
     <% } %>
 
     <div class="page-header text-center">
-        <h1>Here are the posts!</h1>
+        <h1>Hello <%= user.username %>, here's the blog!</h1>
         <br>
         <a href="/submit" class="btn btn-default btn-lg">Submit a post!</a>
         <a href="/logout" class="btn btn-default btn-lg">Logout</a>
@@ -50,8 +50,8 @@
     <% });
     }%>
 
-
-
 </div>
+
+<% include ../partials/footer %>
 </body>
 </html>
