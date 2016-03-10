@@ -8,11 +8,12 @@ var express = require('express'),
     moment = require('moment'),
     dbconfig = require('./../config/database'),
     mysql = require('mysql'),
-    flash = require('connect-flash');
+    flash = require('connect-flash'),
+    login = require('./login');
 
 router.use(flash());
 
-router.get('/posts', isLoggedIn, function (req, res) {
+router.get('/posts', login.isLoggedIn, function (req, res) {
     var query = "SELECT posts.*, users.username FROM posts, users WHERE posts.posterId = users.id ORDER BY date desc";
 
     var connection = mysql.createConnection(dbconfig.connection);
@@ -21,7 +22,7 @@ router.get('/posts', isLoggedIn, function (req, res) {
         if (err) console.log(err);
         var results = rows;
 
-        res.render('posts.ejs', {
+        res.render('pages/posts', {
             user: req.user,
             flash: req.flash(),
             postSuccessful: req.postSuccessful,
@@ -32,14 +33,14 @@ router.get('/posts', isLoggedIn, function (req, res) {
 
 });
 
-router.get('/submit', isLoggedIn, function (req, res) {
-    res.render('submit.ejs', {
+router.get('/submit', login.isLoggedIn, function (req, res) {
+    res.render('pages/submit', {
         user: req.user,
         flash: req.flash()
     });
 });
 
-router.post('/submit', isLoggedIn, function (req, res) {
+router.post('/submit', login.isLoggedIn, function (req, res) {
     var title = sanitizer.escape(req.body.postTitle);
     var comment = sanitizer.escape(req.body.postComment);
     if (!title || title === "" || !title.trim()) {
@@ -69,17 +70,4 @@ router.post('/submit', isLoggedIn, function (req, res) {
     }
 });
 
-
-
-// route middleware to make sure
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-}
-
-module.exports = router
+module.exports = router;
