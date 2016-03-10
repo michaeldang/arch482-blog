@@ -33,18 +33,10 @@
     <% } else {
         posts.forEach(function(post) { %>
         <div class="row">
-
-            <!-- LOCAL INFORMATION -->
-            <div class="span9">
-                <div class="well well-lg">
-                    <strong>Posted by:</strong> <%= post.username %><br>
-                    <strong>on</strong> <%= post.date %><br>
-
-                    <p>
-                        <strong>Title:</strong> <%= post.title %><br>
-                        <strong>Comment:</strong> <%= post.comment %>
-                    </p>
-                </div>
+            <div class="well">
+                <h2><%= post.title %></h2>
+                <h2><small><%= post.comment %></small></h2>
+                <h4><small>Posted by: <b><%= post.username %></b> on <b><%= post.date %></b></small></h4>
             </div>
         </div>
     <% });
